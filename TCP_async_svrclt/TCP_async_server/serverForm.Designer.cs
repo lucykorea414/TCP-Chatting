@@ -132,6 +132,18 @@
             this.ClientList.TabIndex = 52;
             this.ClientList.UseCompatibleStateImageBehavior = false;
             // 
+            // ID
+            // 
+            this.ID.Text = "ID";
+            // 
+            // IP
+            // 
+            this.IP.Text = "IP";
+            // 
+            // Connection
+            // 
+            this.Connection.Text = "Connection";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
