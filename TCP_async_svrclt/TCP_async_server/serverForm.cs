@@ -17,6 +17,7 @@ namespace TCP_async_server
     public partial class serverForm : Form
     {
         Socket mainSock;
+        Socket client;
         IPAddress thisAddress;
         IPEndPoint serverEP;
 
@@ -24,7 +25,9 @@ namespace TCP_async_server
 
         //최대 동시접속자 수
         int backlog = 10;
-
+        
+        //최대 버퍼 사이즈 크기
+        int buffersize = 4096;
         public serverForm()
         {
             InitializeComponent();
@@ -46,6 +49,21 @@ namespace TCP_async_server
             }
 
             txtSvrIP.Text = thisAddress.ToString();
+        }
+
+        void AcceptCallBack(IAsyncResult ar)
+        {
+            client = mainSock.EndAccept(ar);
+            mainSock.BeginAccept(AcceptCallBack, null);
+            AsyncObject obj = new AsyncObject(buffersize)
+            {
+                WorkingSocket = client
+            };
+
+            //connectedClients.Add(client);
+
+            // 클라이언트의 데이터를 받는다.
+            client.BeginReceive(obj.Buffer, 0, 8192, 0, DataReceived, obj);
         }
 
         public void DataReceived(IAsyncResult ar)
@@ -132,7 +150,7 @@ namespace TCP_async_server
 
                     Invoke(new MethodInvoker(delegate
                     {
-                        txtChatList.AppendText($"[{id}]: {message}");
+                        txtChatList.AppendText($"[{id}] : {message}");
                     }));
 
                     //모든 클라에게 클라 접속 브로드 캐스팅
@@ -150,7 +168,7 @@ namespace TCP_async_server
 
                     Invoke(new MethodInvoker(delegate
                     {
-                        txtChatList.AppendText($"비밀쪽지[{id}] -> [{receiver}]: {message}");
+                        txtChatList.AppendText($"비밀쪽지[{id}] -> [{receiver}] : {message}");
                     }));
 
                     //sendtoclient 메서드 호출
@@ -182,12 +200,92 @@ namespace TCP_async_server
 
                     return;
                 }
+                else
+                {
+
+                }
+                obj.ClearBuffer();
+                obj.WorkingSocket.BeginReceive(obj.Buffer, 0, buffersize, 0, DataReceived, obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString() + "\r\n" + ex.StackTrace);
             }
         }
 
         private void btnSvrOpen_Click(object sender, EventArgs e)
         {
+            if(!int.TryParse(txtSvrPort.Text, out int port))
+            {
+                MessageBox.Show("포트 번호가 잘못 입력되었거나 입력되지 않았습니다.");
+                txtSvrPort.Focus();
+                txtSvrPort.SelectAll();
+                return;
+            }
 
+            try
+            {
+                serverEP = new IPEndPoint(thisAddress, port);
+                mainSock.Bind(serverEP);
+                mainSock.Listen(backlog);
+                mainSock.BeginAccept(AcceptCallBack, null);
+
+                txtChatList.AppendText("[Server] : Server Start");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
+            }
+        }
+
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //클라이언트 전체에게 브로드캐스팅
+        public void SendToCli(byte[] text)
+        {
+            foreach(KeyValuePair<IPEndPoint, Client> kv in connectedClients)
+            {
+                Socket socket = kv.Value.getSocket();
+
+                try
+                {
+                    socket.Send(text);
+                }
+                catch
+                {
+                    //오류 발생시 전송 취소하고 리스트에서 삭제
+                    try
+                    {
+                        socket.Dispose();
+                    }
+                    catch { }
+                    connectedClients.Remove(kv.Key);
+                }
+            }
+        }
+
+        //특정 클라이언트에게 전달
+        public void SendToCli(byte[] text, IPEndPoint ip)
+        {
+            Socket socket = connectedClients[ip].getSocket();
+
+            try
+            {
+                socket.Send(text);
+            }
+            catch
+            {
+                //오류 발생시 전송 취소하고 리스트에서 삭제
+                try
+                {
+                    socket.Dispose();
+                }
+                catch { }
+                connectedClients.Remove(ip);
+            }
         }
     }
 }
