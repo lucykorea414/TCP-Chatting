@@ -72,6 +72,7 @@
             this.btnConnect.TabIndex = 39;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // txtCliID
             // 
@@ -200,7 +201,6 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "clientForm";
             this.Text = "Client";
-            this.Load += new System.EventHandler(this.clientForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

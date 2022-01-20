@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Net.Sockets;
 
-namespace TCP_async_server
+namespace TCP_async_client
 {
     class AsyncObject
     {
         public byte[] Buffer;
         public Socket WorkingSocket;
         public readonly int BufferSize;
-
         public AsyncObject(int bufferSize)
         {
             BufferSize = bufferSize;

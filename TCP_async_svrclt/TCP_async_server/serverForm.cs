@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
-using System.Threading;
 
 namespace TCP_async_server
 {
@@ -159,8 +153,9 @@ namespace TCP_async_server
                 {
                     string[] tokens = text.Split('\x01');
                     string header = tokens[0];
-                    string receiver = tokens[1];
-                    string message = tokens[2];
+                    string sender = tokens[1];
+                    string receiver = tokens[2];
+                    string message = tokens[3];
 
                     string id = connectedClients[ip].getID();
 
@@ -168,7 +163,7 @@ namespace TCP_async_server
 
                     Invoke(new MethodInvoker(delegate
                     {
-                        txtChatList.AppendText($"비밀쪽지[{id}] -> [{receiver}] : {message}");
+                        txtChatList.AppendText($"비밀쪽지[{sender}] -> [{receiver}] : {message}");
                     }));
 
                     //sendtoclient 메서드 호출
@@ -240,7 +235,7 @@ namespace TCP_async_server
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-
+            //<SvrMsg>
         }
 
         //클라이언트 전체에게 브로드캐스팅
