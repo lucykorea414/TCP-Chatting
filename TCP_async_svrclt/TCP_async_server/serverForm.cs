@@ -163,7 +163,7 @@ namespace TCP_async_server
 
                     Invoke(new MethodInvoker(delegate
                     {
-                        txtChatList.AppendText($"비밀쪽지[{sender}] -> [{receiver}] : {message}");
+                        txtChatList.AppendText($"비밀쪽지 [{sender}] -> [{receiver}] : {message}");
                     }));
 
                     //sendtoclient 메서드 호출

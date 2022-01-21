@@ -83,11 +83,43 @@ namespace TCP_async_client
             {
                 if (text.Contains("<SrvMsg>"))
                 {
+                    string[] tokens = text.Split('\x01');
+                    string header = tokens[0];
+                    string message = tokens[1];
 
+                    Invoke(new MethodInvoker(delegate
+                    {
+                        txtChatList.AppendText($"[Server] : {message}");
+                    }));
                 }
                 else if (text.Contains("<SMsg>"))
                 {
+                    string[] tokens = text.Split('\x01');
+                    string header = tokens[0];
+                    string sender = tokens[1];
+                    string receiver = tokens[2];
+                    string message = tokens[3];
 
+                    Invoke(new MethodInvoker(delegate
+                    {
+                        txtChatList.AppendText($"비밀 쪽지[{sender}] : {message}");
+                    }));
+                }
+                else if (text.Contains("<Client>"))
+                {
+                    string[] tokens = text.Split('\x01');
+                    string header = tokens[0];
+                    string id = tokens[1];
+
+                    Invoke(new MethodInvoker(delegate
+                    {
+                        ClientList.BeginUpdate();
+
+                        ListViewItem item = new ListViewItem(id);
+                        ClientList.Items.Add(item);
+
+                        ClientList.EndUpdate();
+                    }));
                 }
             }
         }
