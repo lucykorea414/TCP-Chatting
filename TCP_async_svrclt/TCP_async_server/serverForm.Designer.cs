@@ -36,11 +36,11 @@
             this.txtChatList = new System.Windows.Forms.TextBox();
             this.txtMsg = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
-            this.ClientList = new System.Windows.Forms.ListView();
-            this.ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.IP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Connection = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label3 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // txtSvrPort
@@ -120,31 +120,6 @@
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
-            // ClientList
-            // 
-            this.ClientList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.ID,
-            this.IP,
-            this.Connection});
-            this.ClientList.HideSelection = false;
-            this.ClientList.Location = new System.Drawing.Point(583, 37);
-            this.ClientList.Name = "ClientList";
-            this.ClientList.Size = new System.Drawing.Size(244, 562);
-            this.ClientList.TabIndex = 52;
-            this.ClientList.UseCompatibleStateImageBehavior = false;
-            // 
-            // ID
-            // 
-            this.ID.Text = "ID";
-            // 
-            // IP
-            // 
-            this.IP.Text = "IP";
-            // 
-            // Connection
-            // 
-            this.Connection.Text = "Connection";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -155,12 +130,36 @@
             this.label3.TabIndex = 14;
             this.label3.Text = "[Client List]";
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID,
+            this.ip});
+            this.dataGridView1.Location = new System.Drawing.Point(583, 37);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(238, 559);
+            this.dataGridView1.TabIndex = 52;
+            // 
+            // ID
+            // 
+            this.ID.HeaderText = "Client ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            // 
+            // ip
+            // 
+            this.ip.HeaderText = "Client IP";
+            this.ip.Name = "ip";
+            this.ip.ReadOnly = true;
+            // 
             // serverForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(833, 608);
-            this.Controls.Add(this.ClientList);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.txtMsg);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtChatList);
@@ -173,6 +172,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "serverForm";
             this.Text = "Server";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -187,11 +187,10 @@
         private System.Windows.Forms.TextBox txtChatList;
         private System.Windows.Forms.TextBox txtMsg;
         private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.ListView ClientList;
-        private System.Windows.Forms.ColumnHeader ID;
-        private System.Windows.Forms.ColumnHeader IP;
-        private System.Windows.Forms.ColumnHeader Connection;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ip;
     }
 }
 

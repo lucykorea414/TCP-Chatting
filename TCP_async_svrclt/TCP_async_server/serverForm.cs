@@ -43,6 +43,9 @@ namespace TCP_async_server
             }
 
             txtSvrIP.Text = thisAddress.ToString();
+
+
+
         }
 
         void AcceptCallBack(IAsyncResult ar)
@@ -84,8 +87,8 @@ namespace TCP_async_server
                 connectedClients.Remove(ip);
                 string id = connectedClients[ip].getID();
 
-                //listview에서 삭제
-                Invoke(new MethodInvoker(delegate
+                //listview에서 삭제 -> dgv 에서 삭제
+                /*Invoke(new MethodInvoker(delegate
                 {
                     ClientList.BeginUpdate();
 
@@ -97,7 +100,8 @@ namespace TCP_async_server
                     }
 
                     ClientList.EndUpdate();
-                }));
+                }));*/
+
                 
                 //모든 클라에게 클라 접속 종료 브로드캐스팅
 
@@ -226,7 +230,7 @@ namespace TCP_async_server
                 mainSock.BeginAccept(AcceptCallBack, null);
 
                 txtChatList.AppendText("[Server] : Server Start");
-            }
+
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace);
